@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Login | SecureSystem 75{% endblock %}
+
+{% block content %}
+<section class="form-shell">
+    <form class="card form-card" method="post">
+        <p class="eyebrow">Authorized access</p>
+        <h2>Login</h2>
+        <p class="form-intro">Sign in to manage encrypted records, send secure messages, and decrypt your protected content.</p>
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" required>
+
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" required>
+
+        <button class="button primary" type="submit">Login</button>
+    </form>
+</section>
+{% endblock %}

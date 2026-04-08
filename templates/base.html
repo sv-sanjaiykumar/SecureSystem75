@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SecureSystem 75{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="page-glow page-glow-one"></div>
+    <div class="page-glow page-glow-two"></div>
+    <header class="site-header">
+        <div class="brand">
+            <a href="{{ url_for('index') }}">SecureSystem 75</a>
+            <span>Cyber Security for SDG 9</span>
+        </div>
+        <nav>
+            <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+            {% if session.get('user_id') %}
+            <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+            <a class="nav-link" href="{{ url_for('encrypt_data') }}">Encrypt</a>
+            <a class="nav-link" href="{{ url_for('decrypt_data') }}">Decrypt</a>
+            <a class="nav-link nav-link-accent" href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+            <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+            <a class="nav-link nav-link-accent" href="{{ url_for('login') }}">Login</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <section class="alerts">
+                    {% for category, message in messages %}
+                    <div class="alert {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </section>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

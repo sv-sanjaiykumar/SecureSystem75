@@ -1,0 +1,5 @@
+flask==3.1.0
+pymongo==4.10.1
+bcrypt==4.2.1
+pycryptodome==3.21.0
+python-dotenv==1.0.1

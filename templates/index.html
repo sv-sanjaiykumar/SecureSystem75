@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Home | SecureSystem 75{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow">Secure by design</p>
+        <h1>Protect user data with trusted encryption, secure authentication, and resilient storage.</h1>
+        <p class="lead">
+            SecureSystem 75 is a Flask and MongoDB based cyber security platform for protecting sensitive text,
+            managing user access, and sharing encrypted messages safely.
+        </p>
+        <div class="hero-actions">
+            <a class="button primary" href="{{ url_for('register') }}">Create Account</a>
+            <a class="button secondary" href="{{ url_for('login') }}">Login</a>
+        </div>
+    </div>
+    <div class="card feature-grid">
+        <div>
+            <span class="feature-kicker">01</span>
+            <h3>Authentication</h3>
+            <p>Bcrypt-hashed passwords with protected session-based routes.</p>
+        </div>
+        <div>
+            <span class="feature-kicker">02</span>
+            <h3>AES-256</h3>
+            <p>Server-side encrypted data storage with authenticated encryption.</p>
+        </div>
+        <div>
+            <span class="feature-kicker">03</span>
+            <h3>MongoDB</h3>
+            <p>Users, encrypted data, and secure messages stored in separate collections.</p>
+        </div>
+        <div>
+            <span class="feature-kicker">04</span>
+            <h3>Responsive UI</h3>
+            <p>Simple modern pages for registration, login, encryption, and decryption.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

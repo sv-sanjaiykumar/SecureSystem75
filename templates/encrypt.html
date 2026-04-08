@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Encrypt | SecureSystem 75{% endblock %}
+
+{% block content %}
+<section class="grid two-column">
+    <form class="card form-card" method="post">
+        <p class="eyebrow">Private vault</p>
+        <h2>Encrypt Personal Data</h2>
+        <p class="form-intro">Convert plain text into protected ciphertext before storing it in MongoDB.</p>
+        <input type="hidden" name="action" value="store">
+        <label for="plain_text">Text to encrypt</label>
+        <textarea id="plain_text" name="plain_text" rows="8" required></textarea>
+        <button class="button primary" type="submit">Encrypt & Store</button>
+    </form>
+
+    <form class="card form-card" method="post">
+        <p class="eyebrow">Secure messaging</p>
+        <h2>Send Secure Message</h2>
+        <p class="form-intro">Encrypt a message for another registered user so only that receiver can decrypt it after login.</p>
+        <input type="hidden" name="action" value="message">
+        <label for="receiver_id">Receiver</label>
+        <select id="receiver_id" name="receiver_id" required>
+            <option value="">Select user</option>
+            {% for user in users %}
+            <option value="{{ user._id }}">{{ user.username }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="message_text">Message</label>
+        <textarea id="message_text" name="plain_text" rows="8" required></textarea>
+        <button class="button primary" type="submit">Encrypt & Send</button>
+    </form>
+
+    <form class="card form-card" method="post" enctype="multipart/form-data">
+        <p class="eyebrow">Encrypted files</p>
+        <h2>Upload and Encrypt File</h2>
+        <p class="form-intro">Upload an image, PDF, document, or any file below 1 MB. The raw file is encrypted first and only encrypted bytes are stored in MongoDB.</p>
+        <input type="hidden" name="action" value="file">
+        <label for="secure_file">Choose file</label>
+        <input id="secure_file" name="secure_file" type="file" required>
+        <p class="helper-text">Supported: image, document, or other file types under 1 MB.</p>
+        <button class="button primary" type="submit">Encrypt File & Store</button>
+    </form>
+
+    <form class="card form-card" method="post" enctype="multipart/form-data">
+        <p class="eyebrow">Shared files</p>
+        <h2>Send Encrypted File</h2>
+        <p class="form-intro">Upload a file and encrypt it specifically for another user. Only the selected receiver can decrypt and download it after login.</p>
+        <input type="hidden" name="action" value="shared_file">
+        <label for="shared_receiver_id">Receiver</label>
+        <select id="shared_receiver_id" name="receiver_id" required>
+            <option value="">Select user</option>
+            {% for user in users %}
+            <option value="{{ user._id }}">{{ user.username }}</option>
+            {% endfor %}
+        </select>
+        <label for="shared_secure_file">Choose file</label>
+        <input id="shared_secure_file" name="shared_secure_file" type="file" required>
+        <p class="helper-text">Files are encrypted with the receiver's key and stored securely in MongoDB.</p>
+        <button class="button primary" type="submit">Encrypt File & Share</button>
+    </form>
+</section>
+{% endblock %}

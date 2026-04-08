@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Decrypt | SecureSystem 75{% endblock %}
+
+{% block content %}
+<section class="grid two-column">
+    <form class="card form-card" method="post">
+        <p class="eyebrow">Your vault</p>
+        <h2>Decrypt Your Stored Data</h2>
+        <p class="form-intro">Select one encrypted record from your account and restore the original readable content.</p>
+        <input type="hidden" name="record_type" value="data">
+        <label for="record_id">Choose encrypted data</label>
+        <select id="record_id" name="record_id" required>
+            <option value="">Select record</option>
+            {% for record in text_records %}
+            <option value="{{ record._id }}">{{ record._id }} | {{ record.encrypted_text[:40] }}...</option>
+            {% endfor %}
+        </select>
+        <button class="button primary" type="submit">Decrypt Data</button>
+    </form>
+
+    <form class="card form-card" method="post">
+        <p class="eyebrow">Message inbox</p>
+        <h2>Decrypt Received Message</h2>
+        <p class="form-intro">Pick an incoming encrypted message and reveal the original message securely.</p>
+        <input type="hidden" name="record_type" value="message">
+        <label for="message_id">Choose encrypted message</label>
+        <select id="message_id" name="record_id" required>
+            <option value="">Select message</option>
+            {% for message in messages %}
+            <option value="{{ message._id }}">{{ message._id }} | {{ message.encrypted_message[:40] }}...</option>
+            {% endfor %}
+        </select>
+        <button class="button primary" type="submit">Decrypt Message</button>
+    </form>
+
+    <form class="card form-card" method="post">
+        <p class="eyebrow">Encrypted files</p>
+        <h2>Decrypt Stored File</h2>
+        <p class="form-intro">Select a previously stored file and generate a secure decrypted download.</p>
+        <input type="hidden" name="record_type" value="file">
+        <label for="file_id">Choose encrypted file</label>
+        <select id="file_id" name="record_id" required>
+            <option value="">Select file</option>
+            {% for record in file_records %}
+            <option value="{{ record._id }}">{{ record.file_name }} | {{ record.original_size }} bytes</option>
+            {% endfor %}
+        </select>
+        <button class="button primary" type="submit">Prepare File Download</button>
+    </form>
+
+    <form class="card form-card" method="post">
+        <p class="eyebrow">Shared files</p>
+        <h2>Decrypt Received File</h2>
+        <p class="form-intro">Select an encrypted file received from another user and prepare a secure download.</p>
+        <input type="hidden" name="record_type" value="shared_file">
+        <label for="shared_file_id">Choose received file</label>
+        <select id="shared_file_id" name="record_id" required>
+            <option value="">Select shared file</option>
+            {% for shared_file in shared_files %}
+            <option value="{{ shared_file._id }}">{{ shared_file.file_name }} | from {{ shared_file.sender_name }}</option>
+            {% endfor %}
+        </select>
+        <button class="button primary" type="submit">Prepare Shared File Download</button>
+    </form>
+</section>
+
+{% if decrypted_output %}
+<section class="card result-card">
+    <p class="eyebrow">Decryption Result</p>
+    <h2>{{ "Message" if output_type == "message" else "Stored Data" }}</h2>
+    <pre>{{ decrypted_output }}</pre>
+</section>
+{% endif %}
+
+{% if decrypted_file %}
+<section class="card result-card">
+    <p class="eyebrow">File Ready</p>
+    <h2>{{ "Received File Download" if output_type == "shared_file" else "Decrypted File Download" }}</h2>
+    <p class="form-intro">{{ decrypted_file.name }} is ready to download securely.</p>
+    <p class="helper-text">Size: {{ decrypted_file.size }} bytes</p>
+    {% if decrypted_file.download_route == "download_shared_file" %}
+    <a class="button primary" href="{{ url_for('download_shared_file', record_id=decrypted_file.id) }}">Download Received File</a>
+    {% else %}
+    <a class="button primary" href="{{ url_for('download_decrypted_file', record_id=decrypted_file.id) }}">Download Decrypted File</a>
+    {% endif %}
+</section>
+{% endif %}
+{% endblock %}

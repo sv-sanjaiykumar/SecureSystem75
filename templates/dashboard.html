@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | SecureSystem 75{% endblock %}
+
+{% block content %}
+<section class="dashboard-header">
+    <div>
+        <p class="eyebrow">Welcome back</p>
+        <h1>{{ user.username }}</h1>
+        <p class="lead">Manage encrypted records, decrypt stored content, and review secure messages.</p>
+    </div>
+    <div class="hero-actions">
+        <a class="button primary" href="{{ url_for('encrypt_data') }}">Encrypt New Data</a>
+        <a class="button secondary" href="{{ url_for('decrypt_data') }}">Decrypt Records</a>
+    </div>
+</section>
+
+<section class="grid three-column">
+    <article class="card">
+        <div class="section-head">
+            <p class="eyebrow">Vault</p>
+            <h2>Stored Encrypted Text</h2>
+        </div>
+        {% if text_records %}
+            <ul class="list">
+                {% for item in text_records %}
+                <li>
+                    <span class="list-label">Record ID</span>
+                    <strong>{{ item._id }}</strong><br>
+                    <span class="list-label">Ciphertext</span>
+                    {{ item.encrypted_text[:60] }}...
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="empty-state">No encrypted data stored yet.</p>
+        {% endif %}
+    </article>
+
+    <article class="card">
+        <div class="section-head">
+            <p class="eyebrow">Files</p>
+            <h2>Stored Encrypted Files</h2>
+        </div>
+        {% if file_records %}
+            <ul class="list">
+                {% for item in file_records %}
+                <li>
+                    <span class="list-label">File Name</span>
+                    <strong>{{ item.file_name }}</strong><br>
+                    <span class="list-label">Size</span>
+                    {{ item.original_size }} bytes
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="empty-state">No encrypted files stored yet.</p>
+        {% endif %}
+    </article>
+
+    <article class="card">
+        <div class="section-head">
+            <p class="eyebrow">Inbox</p>
+            <h2>Received Messages</h2>
+        </div>
+        {% if received_messages %}
+            <ul class="list">
+                {% for item in received_messages %}
+                <li>
+                    <span class="list-label">From</span>
+                    <strong>{{ item.sender_name }}</strong><br>
+                    <span class="list-label">Ciphertext</span>
+                    {{ item.encrypted_message[:60] }}...
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="empty-state">No messages received yet.</p>
+        {% endif %}
+    </article>
+
+    <article class="card">
+        <div class="section-head">
+            <p class="eyebrow">Shared files</p>
+            <h2>Received Encrypted Files</h2>
+        </div>
+        {% if shared_files %}
+            <ul class="list">
+                {% for item in shared_files %}
+                <li>
+                    <span class="list-label">From</span>
+                    <strong>{{ item.sender_name }}</strong><br>
+                    <span class="list-label">File</span>
+                    {{ item.file_name }}<br>
+                    <span class="list-label">Size</span>
+                    {{ item.original_size }} bytes
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="empty-state">No shared files received yet.</p>
+        {% endif %}
+    </article>
+</section>
+{% endblock %}
